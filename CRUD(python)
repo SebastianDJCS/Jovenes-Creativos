@@ -1,0 +1,90 @@
+import os
+os.system("cls")
+class Evento:
+    def __init__(self, titulo, fecha, ubicacion, nombre, CC):
+        self.titulo = titulo
+        self.fecha = fecha
+        self.ubicacion = ubicacion
+        self.nombre=nombre
+        self.CC=CC
+
+    def __str__(self):
+        return f"Evento: {self.titulo}\nFecha: {self.fecha}\nUbicación: {self.ubicacion}\nNombre: {self.nombre}\nCC:{self.CC}"
+
+eventos = []
+#se define crear_Evento, y se hacen los pasos para realizar esté proceso.
+def crear_evento():
+    CC=input("Ingrese su cédula de ciudadanía: ") 
+    while CC=="":
+        print("\nPor favor ingrese un número válido.")
+        CC=input("Ingrese su cédula de ciudadanía: ")   
+    nombre=input("Ingrese su nombre: ")
+    while nombre == "":
+        print("\nIngrese un valor en este campo.")
+        nombre = input("Ingrese su nombre: ")
+        
+    titulo = input("Ingrese el título del evento: ")
+    while titulo == "":
+        print("\nPor favor ingrese un título válido.")
+        titulo = input("Ingrese el título del evento: ")
+        
+    fecha = input("Ingrese la fecha del evento(AAAA-MM-DD): ")
+    while fecha == "":
+        print("\nPor favor ingrese una fecha válida.")
+        fecha = input("Ingrese la fecha del evento: ")
+        
+    ubicacion = input("Ingrese la ubicación del evento: ")
+    while ubicacion == "":
+        print("\nPor favor ingrese una ubicación válida.")
+        ubicacion = input("Ingrese la ubicación del evento: ")
+
+    nuevo_evento = Evento(titulo, fecha, ubicacion, nombre, CC)
+    eventos.append(nuevo_evento)
+    print("\nEvento creado exitosamente.\n")
+
+def listar_eventos():
+    if not eventos:
+        print("\nNo hay eventos registrados.\n")
+    else:
+        opcion_orden = input("¿Cómo desea ordenar los eventos? (nombre, fecha, cedula): ")
+        opcion_orden = opcion_orden.lower()
+
+        if opcion_orden == "nombre":
+            eventos_ordenados = sorted(eventos, key=lambda x: x.nombre)
+        elif opcion_orden == "fecha":
+            eventos_ordenados = sorted(eventos, key=lambda x: (int(x.fecha[:4]), int(x.fecha[5:7]), int(x.fecha[8:10])))
+        elif opcion_orden == "cedula":
+            eventos_ordenados = sorted(eventos, key=lambda x: x.CC)
+        else:
+            print("Opción de ordenamiento inválida.")
+            return
+
+        for evento in eventos_ordenados:
+            print(f"\n{evento}\n")
+
+def buscar_evento():
+    titulo_buscado = input("\nIngrese el título del evento a buscar: ")
+    for evento in eventos:
+        if evento.titulo == titulo_buscado:
+            print(f"\n{evento}\n")
+            return
+    print("Evento no encontrado.")
+
+while True:
+    print("Menú:")
+    print("1. Crear evento")
+    print("2. Listar eventos")
+    print("3. Buscar evento")
+    print("4. Salir")
+    opcion = input("\nIngrese una opción: ")
+
+    if opcion == '1':
+        crear_evento()
+    elif opcion == '2':
+        listar_eventos()
+    elif opcion == '3':
+        buscar_evento()
+    elif opcion == '4':
+        break
+    else:
+        print("\nOpción inválida.\n")
